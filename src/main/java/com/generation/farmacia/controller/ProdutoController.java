@@ -1,5 +1,6 @@
 package com.generation.farmacia.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.generation.farmacia.model.Categoria;
 import com.generation.farmacia.model.Produto;
 import com.generation.farmacia.repository.CategoriaRepository;
 import com.generation.farmacia.repository.ProdutoRepository;
@@ -79,5 +79,15 @@ public class ProdutoController {
 		if(produto.isEmpty())
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);	
 		produtoRepository.deleteById(id);
+	}
+	
+	@GetMapping("/menorq/{preco}")
+	public List<Produto> listarProdutosMenorQue(@PathVariable BigDecimal preco) {
+	    return produtoRepository.findByPrecoLessThan(preco);
+	}
+
+	@GetMapping("/maiorq/{preco}")
+	public List<Produto> listarProdutosMaiorQue(@PathVariable BigDecimal preco) {
+	    return produtoRepository.findByPrecoGreaterThan(preco);
 	}
 }
